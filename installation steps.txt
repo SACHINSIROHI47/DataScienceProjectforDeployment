@@ -1,0 +1,18 @@
+set python environment first
+python -m venv env
+env/Scripts/Activate.ps1
+
+pip install flask scikit-learn joblib numpy pandas
+pip install gunicorn
+
+--first run  iris_train.py this automatically create the iris_model.pkl
+python iris_train.py
+python app.py
+--Generate the requirement file-----
+pip freeze > requirements.txt
+
+--in Need any for installation of requirments
+pip install -r requirements.txt
+
+
+
