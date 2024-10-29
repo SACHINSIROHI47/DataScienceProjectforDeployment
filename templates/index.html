@@ -1,0 +1,129 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iris Species Prediction</title>
+    <style>
+        /* Basic reset */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        /* Body styling */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f9;
+            font-family: Arial, sans-serif;
+            color: #333;
+        }
+
+        /* Container styling */
+        .container {
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        /* Title styling */
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #4a90e2;
+        }
+
+        /* Form styling */
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        label {
+            font-size: 1rem;
+            color: #333;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            font-size: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        /* Button styling */
+        button {
+            padding: 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #ffffff;
+            background-color: #4a90e2;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #357ABD;
+        }
+
+        /* Result styling */
+        #result {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            color: #4a90e2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Iris Species Prediction</h1>
+        <form id="predict-form">
+            <label>Sepal Length (cm): <input type="number" id="sepal_length" step="0.01" required></label>
+            <label>Sepal Width (cm): <input type="number" id="sepal_width" step="0.01" required></label>
+            <label>Petal Length (cm): <input type="number" id="petal_length" step="0.01" required></label>
+            <label>Petal Width (cm): <input type="number" id="petal_width" step="0.01" required></label>
+            <button type="submit">Predict</button>
+        </form>
+        <p id="result"></p>
+    </div>
+
+    <script>
+        document.getElementById("predict-form").addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            // Collect input values
+            const features = [
+                parseFloat(document.getElementById("sepal_length").value),
+                parseFloat(document.getElementById("sepal_width").value),
+                parseFloat(document.getElementById("petal_length").value),
+                parseFloat(document.getElementById("petal_width").value)
+            ];
+
+            // Send POST request to the prediction endpoint
+            const response = await fetch("/predict", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ features })
+            });
+
+            // Handle response
+            const result = await response.json();
+            document.getElementById("result").textContent = `Prediction: ${result.prediction}`;
+        });
+    </script>
+</body>
+</html>
